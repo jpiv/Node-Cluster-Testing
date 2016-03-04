@@ -11,8 +11,8 @@ if(cluster.isMaster) {
 	cluster.on('listening', worker => {
 		console.log('Worker: ' + worker.id + ' is Listening.');
 		if(worker.id === 2) {
-			console.log('All workers are listening, sending 10 requests');
-			sendReqs();
+			// console.log('All workers are listening, sending 10 requests');
+			// sendReqs();
 		}
 	});
 	const sendReqs = () => {
@@ -27,12 +27,8 @@ if(cluster.isMaster) {
 } else {
 	const handler = (req, res) => {
 		if(req.method === 'GET') {
-			console.log('Worker: ' + cluster.worker.id + ' is now working on the request');
-			setTimeout(() => {
-				console.log('GET request - handled by worker:', cluster.worker.id);
-				res.statusCode = 200;
-				res.end('Okay, process id: ' + process.pid);
-			}, 5000);
+			res.statusCode = 200;
+			res.end('Okay, process id: ' + process.pid);
 		}
 	};
 	const server = http.createServer(handler);

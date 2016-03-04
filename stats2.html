@@ -1,0 +1,497 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Api Benchmark :: report</title>
+    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/excanvas.min.js"></script><![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/jquery.jqplot.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.canvasTextRenderer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/plugins/jqplot.highlighter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqPlot/1.0.8/jquery.jqplot.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/dark.min.css" type="text/css" />
+
+    <style type="text/css">
+      .jqplot-target {
+        color: #F1F1F1;
+      }
+      table.jqplot-table-legend, table.jqplot-cursor-legend {
+        background-color: rgba(101, 0, 253, 0.89)
+      }
+
+      body {
+        background: #3D3D3D;
+        color: #F1F1F1;
+      }
+
+      a {
+        color: #6699FF;
+      }
+
+      #report-details, #charts {
+        width: 100%;
+        float: left;
+        font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;
+      }
+
+      #report-details {
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .buttons {
+        width: 100%;
+        border-bottom: 1px solid rgb(75, 72, 72);
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        text-align: right;
+      }
+
+      .button {
+        margin-right: 10px;
+        padding: 6px;
+        text-decoration: none;
+      }
+
+      .button.selected {
+        background-color: rgb(56, 56, 56);
+      }
+
+      .chart {
+        width: 60%;
+        height: 450px;
+        float: left;
+      }
+
+      .distchart {
+        width: 96%;
+        height: 450px;
+        float: left;
+      }
+
+      .panel {
+        height: 450px;
+        overflow-y: auto;
+      }
+
+      .route {
+        width: 90%;
+        margin: 3%;
+        padding: 2%;
+        float: left;
+        background-color: #000000;
+        border-radius: 15px;
+      }
+      .stats-details {
+        font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;
+        font-size: 15px;
+        float: left;
+        width: 36%;
+        padding: 2%;
+      }
+
+      .green {
+        color: green;
+      }
+
+      .red {
+        color: red;
+      }
+
+      .hide {
+        display:none;
+      }
+
+      pre code {
+        overflow-x: auto;
+      }
+
+    </style>
+  </head>
+  <body>
+    <script><!--
+    var data={"benchmark":{"singleProcess":{"route":{"name":"singleProcess/route","href":"http://localhost:9998/","stats":{"sample":[5.065990711,5.064902417,5.064322357,5.064917744,5.065433108,5.064793241,5.065232717,5.065775954,5.066177949,5.066695328,5.06719859,5.067234904,5.067788712,5.068936727,5.069586126,5.070181269,5.070599767,5.071114212,5.072051744,5.072663368,5.073885325,5.072922778,5.074313755,5.074831557,5.075418637,5.075776737,5.076214515,5.077009069,5.0775072,5.078050936,5.08039362,5.083117651,5.091250391,5.0917579,5.092219396,5.092690403,5.092940629,5.093361706,5.093885943,5.094425375,5.095167172,5.095659826,5.096123352,5.096556646,5.096917969,5.097872228,5.098214284,5.098187437,5.098757322,5.099412422,5.099962384,5.100392422,5.10051607,5.101257939,5.101840358,5.102282271,5.102780773,5.103223113,5.103609774,5.106505334,5.107045449,5.107396125,5.107827844,5.11058094,5.111138695,5.111629898,5.113317465,5.113824279,5.116583913,5.1138696790000004,5.116816409,5.117413301,5.1186397,5.117663802,5.118867794,5.119223149,5.119708007,5.125662773,5.126413729,5.126969235,5.127442123,5.127853946,5.128217484,5.128779611,5.129407644,5.130037421,5.130560213,5.131279705,5.132067932,5.132603127,5.133152357,5.133715166,5.134259892,5.134749671,5.135314651,5.135862415,5.136316299,5.136854981,5.137305643,5.137795305,5.122656846,5.114893981,5.113678464,5.113338799,5.113090158,5.112949651,5.112823936,5.112639557,5.116774815,5.116679428,5.116646341,5.116791964,5.116645269,5.115800642,5.11522879,5.114801381,5.115496209,5.115307003,5.114645457,5.114568612,5.114671737,5.114643212,5.114631152,5.114386941,5.115297657,5.114909677,5.114027707,5.113364488,5.113009819,5.112675205,5.110613336,5.109972596,5.107258583,5.106959858,5.10665586,5.106300985,5.106117306,5.105923872,5.105632073,5.105317209,5.10478869,5.104471068,5.104204149,5.103928972,5.103328748,5.102547539,5.102661367,5.103048458,5.103009818,5.102663505,5.10240581,5.102211989,5.102025549,5.101506559,5.101217097,5.100957653,5.100635206,5.100365092,5.100178599,5.097446495,5.099351401,5.099574666,5.099911325,5.09832499,5.098301616,5.0979122199999996,5.096173285,5.095785864,5.095428027,5.093559519,5.093106068,5.092761644,5.092517316,5.092265833,5.091980152,5.091763529,5.091558687,5.085693503,5.085176498,5.084728777,5.084376274,5.084030941,5.083688753,5.083277955,5.08288913,5.082495658,5.082143655,5.081524404,5.081055667,5.08076547,5.080463226,5.080148591,5.07989837,5.079491233,5.079407,5.079245815,5.078947956,5.078765646,5.078524739,5.078254599,5.075589203,5.075658523,5.075716985,5.075980682,5.076234644,5.076725053,5.076863313,5.076951735,5.072678388,5.072756574,5.072754553,5.072630806,5.072626168,5.072781449,5.072828979,5.072921765,5.071964727,5.071970904,5.071994447,5.071699529,5.07131753,5.071079555,5.070834017,5.070839655,5.069618757,5.069565148,5.069513849,5.070898177,5.070905608,5.070826809,5.070754745,5.068238037,5.063578618,5.06339592,5.063340328,5.063276335,5.063242942,5.063233631,5.063163738,5.063144538,5.063103965,5.06306152,5.063061723,5.063079595,5.063032814,5.063006303,5.062645087,5.062039088,5.061676667,5.061605467,5.061567796,5.061560403,5.061497206,5.061471079,5.061403414,5.061426515,5.061427605,5.061467748,5.061427183,5.061438769,5.059151581,5.05874582,5.058677752,5.057778529,5.057610415,5.057492446,5.057557892,5.05752178,5.057494509,5.057506899,5.05747729,5.057489517,5.057480143,5.057400948,5.057375086,5.057343321,5.057280344,5.057350192,5.057354677,5.05738441,5.057383093,5.057290628,5.057299573,5.057247943,5.059677102,5.059782189,5.05975935,5.059767014,5.059708525,5.05968731,5.060078512,5.060092843,5.060838472,5.061893803,5.069326033,5.069564308,5.069668941,5.069523714,5.069522456,5.06941748,5.067005902,5.067128772,5.067258553,5.06729309,5.067221056,5.066615281,5.066503831,5.066387513,5.066429385,5.066321222,5.06620444,5.066096477,5.066071739,5.065926853,5.065928138,5.065957263,5.065986429,5.065956658,5.065960169,5.065923178,5.065949372,5.065823332,5.06583133,5.065780375,5.065776772,5.065672766,5.065703437,5.064625689,5.064606476,5.064623727,5.067203367,5.067320857,5.067839354,5.067840228,5.067829745,5.067771038,5.067746102,5.071016518,5.071060362,5.071008169,5.071016576,5.071023808,5.071736632,5.071807979,5.071835532,5.071837242,5.071777915,5.071728341,5.07171248,5.071723579,5.071682681,5.071624883,5.071673407,5.071607776,5.071585407,5.071581129,5.071525672,5.071487521,5.07147816,5.071439186,5.071424963,5.071398084,5.070834569,5.070749746,5.070608472,5.070589519,5.070551969,5.070504236,5.070489501,5.070457863,5.070437808,5.070466613,5.070402103,5.070409856,5.07038394,5.070374406,5.070392005,5.070355137,5.070347445,5.070292916,5.070280738,5.070317605,5.070306944,5.070310124,5.067838274,5.067637501,5.067629342,5.067591964,5.067537973,5.067559703,5.067097416,5.066988466,5.068614267,5.069852824,5.063642326,5.063524274,5.063496897,5.063526075,5.06351099,5.063606782,5.062878798,5.062570341,5.062040696,5.06151496,5.060982323,5.060666557,5.060274878,5.059958483,5.059643231,5.059261781,5.058894873,5.058662388,5.058292259,5.057989753,5.057709,5.057430564,5.057006186,5.056634033,5.056276505,5.056788242,5.05650163,5.056433074,5.056168846,5.056020151,5.055860595,5.055780959,5.05551608,5.055007664,5.054772095,5.054538652,5.051711303,5.051378047,5.050582521,5.050313953,5.050211857,5.050139572,5.049995752,5.046529977,5.046291238,5.046143747,5.045999515,5.045859273,5.044951614,5.044678879,5.044458012,5.044225878,5.044016089,5.044010961,5.044067748,5.043852778,5.043649218,5.043754146,5.043484284,5.043396583,5.043173671,5.042888652,5.042696768,5.042434397,5.042202545,5.041978426,5.041805591,5.04155662,5.041344492,5.041105417,5.040831425,5.040588552,5.040340346,5.04018954,5.039932716,5.039680045,5.039475445,5.039175272,5.038919922,5.038668164,5.038453861,5.038171186,5.037910924,5.03763053,5.037359135,5.037111778,5.036880451,5.036725038,5.036460094,5.036200363,5.035937145,5.035711651,5.035475379,5.035196884,5.035015171,5.034732039,5.034492687,5.034240464,5.031517758,5.02868454,5.027317186,5.026928496,5.026561934,5.026272645,5.026011751,5.025676566],"mean":5.075825300277995,"singleMean":0.05075825300277995,"variance":0.0006305894089342762,"deviation":0.02511153935811734,"sem":0.0011230221804882361,"moe":0.0022011234737569427,"rme":0.043364839086096806,"p75":5.09603898,"p95":5.1196837640999995,"p99":5.13585693736,"p999":5.137795305},"errors":{},"options":{"method":"get","concurrencyLevel":100,"start":"2016-03-04T19:56:25.280Z","end":"2016-03-04T19:56:50.694Z"},"request":{},"response":{"header":{"date":"Fri, 04 Mar 2016 19:56:30 GMT","connection":"close","content-length":"4"},"statusCode":200,"type":""},"hz":19.701229668901952}}},"info":{"date":"2016-03-04T19:56:50.705Z","apiName":"singleProcess"}};
+    // --></script>
+    <div id="report">
+      <div id="report-details"><h1>Api Benchmark report</h1></div>
+      <div id="charts"></div>
+    </div>
+    <div style="text-align: center">
+    Generated by <a href="https://github.com/matteofigus/api-benchmark" target="_blank">api-benchmark</a><br /><br />
+    <iframe src="http://ghbtns.com/github-btn.html?user=matteofigus&repo=api-benchmark&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe>
+    </div>
+    <script>
+
+      var selectors = {
+        charts: '#charts',
+        reportDetails: '#report-details',
+        panel: '.panel',
+        panels: {
+          stats: '.stats',
+          distribution: '.distribution',
+          response: '.response',
+          request: '.request'
+        },
+        button: '.button',
+        buttons: {
+          stats: '.button-stats',
+          distribution: '.button-distribution',
+          response: '.button-response',
+          request: '.button-request'
+        }
+      };
+
+      var formatNumber = function(number) {
+        number = String(number).split('.');
+        return number[0].replace(/(?=(?:\d{3})+$)(?!\b)/g, ',') +
+          (number[1] ? '.' + number[1] : '');
+      };
+
+      var formatDate = function(date){
+        return date.replace(/T/g, ' ').replace(/Z/g, ' ');
+      };
+
+      var fixNumber = function(number, digits){
+        return formatNumber(number.toFixed(digits));
+      };
+
+      var decodeHtml = function(text){
+        return $('<div/>').text(text).html();
+      };
+
+      var templates = {
+        reportDetails: function(info){
+          var formattedDate = formatDate(info.date);
+          return 'Benchmarked ' + info.apiName + ' on ' + formattedDate;
+        },
+        route: function(routeData, i){
+          var errorsCount = 0,
+              errorsDesc = '(',
+              duration = (new Date(routeData.options.end) - new Date(routeData.options.start))/1e3;
+
+          for(var errorType in routeData.errors){
+            errorsCount += routeData.errors[errorType].length;
+            errorsDesc += routeData.errors[errorType].length + ' ' + errorType + ',';
+          }
+
+          if(errorsCount == 0)
+            errorsDesc = '';
+          else
+            errorsDesc = errorsDesc.substr(0, errorsDesc.length - 1) + ')';
+
+          var template = '<div class="route"><div class="buttons">' +
+            '<a href="#stats" class="button button-stats selected">Stats</a>' +
+            '<a href="#distribution" class="button button-distribution">Distribution</a>' +
+            '<a href="#request" class="button button-request">Request details</a>' +
+            '<a href="#response" class="button button-response">Response details</a>' +
+            '</div><div class="stats panel"><div class="chart" id="chart' + i + '"></div>' +
+            '<div class="stats-details"><ul><li>' + routeData.stats.sample.length + ' run' +
+            (routeData.stats.sample.length > 1 ? 's' : '') + ' sampled with concurrency: ' +
+            routeData.options.concurrencyLevel + '</li>';
+
+          if(routeData.options.expectedStatusCode)
+            template += '<li>Expected status code: ' + routeData.options.expectedStatusCode + '</li>';
+
+          if(routeData.options.maxMean)
+            template += '<li>Expected max mean: ' + routeData.options.maxMean + '</li>';
+
+          if(routeData.options.maxSingleMean)
+            template += '<li>(*) Expected max mean across all concurrent requests: ' + routeData.options.maxSingleMean + '</li>';
+
+          template += '</ul><ul><li>Started: ' + formatDate(routeData.options.start) + '</li>' +
+            '<li>Ended: ' + formatDate(routeData.options.end) + ' (' + duration + ' seconds)</li>' +
+            '<li>' + fixNumber(routeData.hz, 2) + ' ops/sec \xb1 ' + fixNumber(routeData.stats.rme, 2) + '%</li>' +
+
+            '<li class="' + (!errorsCount ? 'green' : 'red') + '">' + errorsCount + ' error' +
+            (errorsCount == 1 ? '' : 's') + ' ' + errorsDesc + '</li>' +
+
+            '<li>Sample arithmetic mean: ' + fixNumber(routeData.stats.mean, 6) + '</li>';
+
+          if(routeData.options.concurrencyLevel > 1)
+            template += '<li>Mean across all the concurrent requests: ' + fixNumber(routeData.stats.singleMean, 6) + '</li>';
+
+          template += '<li>Sample standard deviation: ' + fixNumber(routeData.stats.deviation, 6) + '</li>' +
+            '<li>Margin of error: ' + fixNumber(routeData.stats.moe, 6) + '</li>' +
+            '<li>The standard error of the mean: ' + fixNumber(routeData.stats.sem, 6) + '</li>' +
+            '<li>The sample variance: ' + fixNumber(routeData.stats.variance, 6) + '</li>' +
+            '</ul><ul><li>75% Percentile: ' + fixNumber(routeData.stats.p75, 6) + '</li>' +
+            '<li>95% Percentile: ' + fixNumber(routeData.stats.p95, 6) + '</li>' +
+            '<li>99% Percentile: ' + fixNumber(routeData.stats.p99, 6) + '</li>' +
+            '<li>99.9% Percentile: ' + fixNumber(routeData.stats.p999, 6) + '</li>' +
+            '</ul></div></div><div class="distribution panel"><div class="distchart" id="distchart' + i + '">' +
+            '</div></div><div class="request panel hide">Request: ' + routeData.options.method.toUpperCase() +
+            ' <a href="' + routeData.href + '" target="_blank">' +
+            routeData.href + '</a><br />Concurrency level: ' + routeData.options.concurrencyLevel + '<br />';
+
+          if(routeData.options.delay)
+            template += 'Delay between bench cycles: ' + routeData.options.delay + '<br />';
+
+          var requestHeaders = 'none',
+              requestData = 'none',
+              requestQuery = 'none';
+
+          if(!!routeData.request.headers)
+            requestHeaders = '<br /><pre><code>' + JSON.stringify(routeData.request.headers, undefined, 2) + '</pre></code>';
+
+          if(!!routeData.request.data)
+            requestData = '<br /><pre><code>' + JSON.stringify(routeData.request.data, undefined, 2) + '</pre></code>';
+
+          if(!!routeData.request.query)
+            requestQuery = '<br /><pre><code>' + JSON.stringify(routeData.request.query, undefined, 2) + '</pre></code>';
+
+          template += '<br />Headers sent: ' + requestHeaders + '<br />Data sent: ' + requestData + '<br />Query sent: ' + requestQuery + '<br /></div><div class="response panel hide">Data here refers to the first sampled response.<br /><br />';
+
+          var responseHeader = JSON.stringify(routeData.response.header, undefined, 2),
+              responseBody = '';
+
+          try {
+            responseBody = JSON.stringify(JSON.parse(decodeHtml(routeData.response.body)), undefined, 2);
+          } catch(e){
+            responseBody = decodeHtml(routeData.response.body);
+          }
+
+          template += 'Response status: ' + routeData.response.statusCode + '<br />Response headers:<br />' +
+            '<pre><code>' + responseHeader + '</code></pre>' +
+            '<br />Response body:<br /><pre><code>' + responseBody + '</code></pre><br /></div></div>';
+
+          return template;
+        }
+      };
+
+      var bindButtons = function(){
+        var bindButton = function(panelName){
+          $(selectors.buttons[panelName]).click(function(){
+            var $sender = $(this),
+                $panelsContainer = $sender.parent().parent();
+
+            $panelsContainer.find(selectors.button).removeClass('selected');
+            $sender.addClass('selected');
+
+            $panelsContainer.find(selectors.panel).addClass('hide');
+            $panelsContainer.find(selectors.panels[panelName]).removeClass('hide');
+
+            return false;
+          });
+        };
+
+        bindButton('stats');
+        bindButton('distribution');
+        bindButton('response');
+        bindButton('request');
+      };
+
+      $(function(){
+        $(selectors.reportDetails).append(templates.reportDetails(data.info));
+
+        var counter = 0;
+        for(serviceName in data.benchmark){
+          for(routeName in data.benchmark[serviceName]){
+            $(selectors.charts).append(templates.route(data.benchmark[serviceName][routeName], counter));
+
+            var samples = data.benchmark[serviceName][routeName]['stats']['sample'],
+                meanArray = [],
+                mean = data.benchmark[serviceName][routeName]['stats']['mean'],
+                singleMeanArray = [],
+                singleMean = data.benchmark[serviceName][routeName]['stats']['singleMean'],
+                maxMeanArray = [],
+                maxMean = data.benchmark[serviceName][routeName].options.maxMean !== undefined,
+                maxSingleMeanArray = [],
+                maxSingleMean = data.benchmark[serviceName][routeName].options.maxSingleMean !== undefined,
+                errorsArray = [],
+                areThereSomeErrors = false;
+
+            for(var i = 0; i < samples.length; i++){
+              meanArray.push(mean);
+              singleMeanArray.push(singleMean);
+
+              errorsArray.push(null);
+
+              if(maxMean)
+                maxMeanArray.push(data.benchmark[serviceName][routeName].options.maxMean);
+
+              if(maxSingleMean)
+                maxSingleMeanArray.push(data.benchmark[serviceName][routeName].options.maxSingleMean);
+            }
+
+            for(var errorType in data.benchmark[serviceName][routeName].errors){
+              var errorsOfType = data.benchmark[serviceName][routeName]['errors'][errorType];
+              for(var i = 0; i < errorsOfType.length; i++){
+                if(errorsOfType[i].pos !== undefined){
+                  errorsArray[errorsOfType[i].pos] = data.benchmark[serviceName][routeName]['stats']['sample'][errorsOfType[i].pos];
+                  areThereSomeErrors = true;
+                }
+              }
+            }
+
+            var getSeriesOptions = function(label, color){
+              return {
+                showMarker: false,
+                pointLabels: { show: true },
+                label: label,
+                color: color
+              };
+            };
+
+            var lines = [samples],
+                series = [getSeriesOptions('Samples', '#6699FF')];
+
+            if(maxMean){
+              lines.push(maxMeanArray);
+              series.push(getSeriesOptions('Max Mean', '#F90'));
+            }
+
+            lines.push(meanArray);
+            series.push(getSeriesOptions('Mean', '#66FF00'));
+
+            if(maxSingleMean){
+              lines.push(maxSingleMeanArray);
+              series.push(getSeriesOptions('Max Single Mean (*)', '#EBFF00'));
+
+              lines.push(singleMeanArray);
+              series.push(getSeriesOptions('Single mean', '#FC6333'));
+            }
+
+            if(areThereSomeErrors > 0){
+              lines.push(errorsArray);
+              series.push({
+                showLine:false,
+                markerOptions: { size: 7, style:'x' },
+                label: 'Errors',
+                color: '#FF0000'
+              });
+            }
+
+            var options = {
+              title: {
+                text: data.benchmark[serviceName][routeName]['name'],
+                color: '#F1F1F1'
+              },
+              animate: true,
+              grid: {
+                background: '#000000', textColor: '#F1F1F1'
+              },
+              seriesDefaults:{
+                rendererOptions: {
+                  showDataLabels: true
+                }
+              },
+              highlighter: {
+                show: true,
+                sizeAdjust: 7.5
+              },
+              legend: {
+                show:true,
+                location: 'se',
+                background: 'rgba(101, 0, 253, 0.89)'
+              },
+              axesDefaults: {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+              },
+              axes: {
+                xaxis: {
+                  label: 'Samples',
+                  pad: 0
+                },
+                yaxis: {
+                  label: 'Response time (seconds)',
+                  tickOptions: {
+                    formatString:'%.6f'
+                  }
+                }
+              },
+              series: series
+            };
+
+            $.jqplot('chart' + counter, lines, options);
+            counter++;
+          }
+        }
+        hljs.initHighlightingOnLoad();
+        bindButtons();
+      });
+
+      $(function(){
+        var counter = 0;
+        for(serviceName in data.benchmark){
+          for(routeName in data.benchmark[serviceName]){
+            var samples = data.benchmark[serviceName][routeName]['stats']['sample'];
+            var buckets = [[0.001, 0], [0.005, 0], [0.01, 0], [0.015, 0], [0.025, 0], [0.05, 0], [0.1, 0], [0.25, 0], [0.333, 0], [0.5, 0], [0.750, 0], [1.5, 0], [3, 0], [6, 0], [12, 0], [50, 0], [100, 0], [300, 0], [1000, 0]];
+            for(var i = 0; i<samples.length; i++) {
+              for (var j =0; j<buckets.length; j++) {
+                if(buckets[j][0]>= samples[i]){
+                  buckets[j][1] += 100/samples.length;
+                  break;
+                }
+              };
+            }
+
+            var distribution = [];
+            for(i =0; i<buckets.length; i++) {
+              if(buckets[i][1]){
+                distribution.push(buckets[i]);
+              }
+            }
+            var lines = [distribution],
+                series = [{
+                  showMarker: false,
+                  pointLabels: { show: true },
+                  label: 'Samples',
+                  color: '#6699FF'
+                }];
+
+            var options = {
+              title: {
+                text: data.benchmark[serviceName][routeName]['name'],
+                color: '#F1F1F1'
+              },
+              animate: true,
+              grid: {
+                background: '#000000', textColor: '#F1F1F1'
+              },
+              seriesDefaults:{
+                rendererOptions: {
+                  showDataLabels: true
+                }
+              },
+              highlighter: {
+                show: true,
+                sizeAdjust: 7.5
+              },
+              legend: {
+                show:true,
+                location: 'se',
+                background: 'rgba(101, 0, 253, 0.89)'
+              },
+              axesDefaults: {
+                labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+              },
+              axes: {
+                xaxis: {
+                  label: 'Response time (seconds)',
+                  tickOptions: {
+                    formatString:'%.3f'
+                  }
+                },
+                yaxis: {
+                  label: 'Percent of responses',
+                  tickOptions: {
+                    formatString: '%.1f%'
+                  }
+                }
+              },
+              series: series
+            };
+
+            $.jqplot('distchart' + counter, lines, options);
+            counter++;
+          }
+        }
+        $(".distribution.panel").addClass('hide');
+      });
+    </script>
+  </body>
+</html>
+
